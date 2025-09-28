@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kaixin LI | Agent and Code Intelligence Researcher</title>
+
+  <!-- Icons and Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.2/css/academicons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --background: #0b0f14;
+      --text: #e6f1ff;
+
+      --terminal-blue: #39c5ff;
+      --terminal-purple: #9b5de5;
+      --terminal-red: #ff2ea6;
+      --terminal-green: #59f764;
+      --terminal-yellow: #ffd166;
+      --terminal-gold: #FFD700;
+
+      --border-color: rgba(255, 255, 255, 0.08);
+      --card-border: 1px solid var(--border-color);
+      --card-border-radius: 14px;
+
+      --glass-blur: saturate(120%) blur(10px);
+
+      --tag-text: #8bd9ff;
+      --chip-text: #dbeafe;
+
+      --mm-gradient: linear-gradient(90deg, #39c5ff 0%, #ff2ea6 50%, #9b5de5 100%);
+
+      --card-bg-dark: rgba(13, 17, 23, 0.55);
+      --card-bg-light: rgba(255, 255, 255, 0.88);
+      --bar-bg-dark: rgba(18, 24, 32, 0.7);
+      --bar-bg-light: rgba(240, 243, 248, 0.92);
+
+      --layer-dark: 1;
+      --layer-light: 0;
+
+      --gui-grad: linear-gradient(135deg, rgba(57,197,255,0.28), rgba(255,46,166,0.22), rgba(155,93,229,0.24));
+      --code-grad: radial-gradient(120px at 30% 30%, rgb(191 212 255 / 28%), transparent 60%), linear-gradient(135deg, rgba(99,102,241,0.22), rgba(16,185,129,0.22));
+      --robot-grad: linear-gradient(135deg, rgba(155,93,229,0.28), rgba(255,215,0,0.26));
+    }
+
+    .light-theme {
+      --background: #f7f9fc;
+      --text: #10151a;
+      --terminal-green: #2563eb;
+      --border-color: rgba(16, 21, 26, 0.12);
+      --layer-dark: 0;
+      --layer-light: 1;
+      --tag-text: #0f172a;
+      --chip-text: #0f172a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      background: var(--background);
+      color: var(--text);
+      font-family: 'Fira Code', monospace;
+      line-height: 1.6;
+      padding: 20px;
+      transition: background 0.6s ease, color 0.6s ease;
+    }
+    a { color: var(--terminal-blue); text-decoration: none; transition: color 0.25s ease, text-shadow 0.25s ease; }
+    a:hover { color: var(--terminal-green); text-shadow: 0 0 6px rgba(37,99,235,0.45); }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+    aside.sidebar {
+      padding: 0 6px 6px 0; /* top aligned with main column */
+      border-right: 1px solid rgba(57,197,255,0.25);
+      transition: border-color 0.6s ease;
+    }
+    @media (min-width: 1025px) {
+      aside.sidebar {
+        position: sticky; /* keep visible on wide screens */
+        top: 20px;        /* match body padding top */
+        align-self: start;
+      }
+    }
+    main { padding: 0 0 10px 0; }
+
+    .terminal-header {
+      grid-column: 1 / -1;
+      position: relative;
+      padding: 20px;
+      border: 1px solid transparent;
+      border-image: var(--mm-gradient) 1;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      overflow: hidden;
+      background: linear-gradient(185deg, rgba(57,197,255,0.06), rgba(155,93,229,0.05));
+      box-shadow: 0 0 24px rgba(57,197,255,0.15), 0 0 24px rgba(255,46,166,0.10);
+      transition: box-shadow 0.6s ease, border-color 0.6s ease, color 0.6s ease;
+    }
+    .terminal-title {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 12px; font-size: 0.95rem;
+      color: #9fbad1;
+      transition: color 0.6s ease;
+    }
+    .terminal-title .led { font-size: 10px; }
+    .terminal-title .led.red   { color: #ff5f56; }
+    .terminal-title .led.yellow{ color: #ffbd2e; }
+    .terminal-title .led.green { color: #27c93f; }
+    .terminal-title .typed-text { color: var(--text); opacity: 0.9; transition: color 0.6s ease; }
+
+    .ascii-art {
+      font-size: 1.0rem;
+      color: transparent;
+      background-image: var(--mm-gradient);
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      letter-spacing: 2px;
+      animation: gradientMove 8s ease-in-out infinite alternate;
+      margin: 14px 0 12px;
+      text-align: center;
+      line-height: 1.2;
+      white-space: pre;
+      font-weight: 700;
+    }
+    @keyframes gradientMove {
+      from { background-position: 0% 50%; }
+      to   { background-position: 100% 50%; }
+    }
+
+    .card,
+    .pub-category,
+    .terminal-bar,
+    .theme-toggle {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--card-border-radius);
+      border: var(--card-border);
+      transition: border-color 0.6s ease, color 0.6s ease, box-shadow 0.6s ease, transform 0.4s ease;
+    }
+    .card::before,
+    .pub-category::after,
+    .terminal-bar::before,
+    .theme-toggle::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-color: var(--card-bg-dark);
+      opacity: var(--layer-dark);
+      transition: opacity 0.6s ease;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .card::after,
+    .terminal-bar::after,
+    .theme-toggle::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-color: var(--card-bg-light);
+      opacity: var(--layer-light);
+      transition: opacity 0.6s ease;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .terminal-bar::before { background-color: var(--bar-bg-dark); }
+    .terminal-bar::after  { background-color: var(--bar-bg-light); }
+
+    .card > *, .pub-category > *, .terminal-bar > *, .theme-toggle > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .card {
+      padding: 18px;
+      backdrop-filter: var(--glass-blur);
+      margin: 16px 0;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+    }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.32); }
+
+    .terminal-bar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+    }
+    .terminal-stats { display: flex; gap: 14px; color: #9fbad1; transition: color 0.6s ease; }
+    .cursor {
+      display: inline-block;
+      width: 0.7rem; height: 1rem;
+      background: #39c5ff;
+      box-shadow: 0 0 10px rgba(57,197,255,0.6);
+      animation: agentPulse 1.2s infinite;
+      vertical-align: text-bottom;
+      margin-left: -5px;
+      margin-bottom: 2.5px;
+      border-radius: 2px;
+    }
+    @keyframes agentPulse {
+      0%,100% { box-shadow: 0 0 8px rgba(57,197,255,0.6); }
+      50%     { box-shadow: 0 0 14px rgba(255,46,166,0.6); }
+    }
+
+    h2, h3 {
+      margin: 10px 0 12px;
+      position: relative;
+      padding-left: 16px;
+      transition: color 0.6s ease;
+    }
+    h2::before, h3::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 50%; transform: translateY(-50%);
+      width: 8px; height: 8px;
+      background: var(--mm-gradient);
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(57,197,255,0.4);
+    }
+    h2 { font-size: 1.25rem; }
+    h3 { font-size: 1.05rem; color: #b9d6ee; }
+    .light-theme h3 { color: #0f172a; } /* subtitle readability fix */
+
+    h3.paper-category {
+      margin-top: 1rem;
+      margin-bottom: 3rem;
+    }
+
+    .pub-section { margin-bottom: 24px; }
+    .pub-category {
+      position: relative;
+      z-index: 1; /* ensure cards sit above section art */
+      padding: 16px 16px 12px 22px;
+      margin-bottom: 14px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.22);
+      backdrop-filter: var(--glass-blur);
+      transition: box-shadow 0.6s ease, transform 0.4s ease, border-color 0.6s ease, color 0.6s ease;
+    }
+    .pub-category::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      background-image: var(--mm-gradient);
+      border-radius: 12px 0 0 12px;
+      opacity: 0.95;
+      z-index: 2;
+    }
+    .pub-category:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(0,0,0,0.28); }
+
+    /* Softer title color in dark mode */
+    .pub-title { font-weight: 700; color: #dbeafe; margin-bottom: 6px; font-size: 1.02rem; transition: color 0.6s ease; }
+    .light-theme .pub-title { color: #0f172a; }
+
+    .pub-authors { color: #a8b7c7; font-size: 0.92rem; margin-bottom: 4px; transition: color 0.6s ease; }
+    .pub-authors .me {
+      font-weight: 700;
+      color: var(--terminal-blue);
+      background: rgba(57,197,255,0.12);
+      padding: 0 4px;
+      border-radius: 4px;
+    }
+    .light-theme .pub-authors .me {
+      color: #0f172a;
+      background: rgba(37,99,235,0.12);
+    }
+
+    .pub-venue { color: var(--terminal-blue); font-style: italic; margin-bottom: 8px; font-size: 0.92rem; transition: color 0.6s ease; }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+    .tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: linear-gradient(90deg, rgba(57,197,255,0.12), rgba(255,46,166,0.12));
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      padding: 4px 8px;
+      font-size: 0.76rem;
+      color: var(--tag-text);
+      font-weight: 500;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, color 0.6s ease, border-color 0.6s ease, background-color 0.6s ease;
+      white-space: nowrap;
+    }
+    .tag:hover { transform: translateY(-1px); box-shadow: 0 0 10px rgba(57,197,255,0.25); }
+    .tag.highlight { border-color: #ff2ea6; color: #ff87c9; }
+    .tag.used { border-color: #39c5ff; color: #0ea5e9; }
+    .tag.award { border-color: #FFD700; color: #b08900; }
+
+    .chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      background-color: rgba(255,255,255,0.06);
+      color: var(--chip-text);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 0.76rem;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.6s ease, color 0.6s ease, border-color 0.6s ease;
+    }
+    .chip:hover { transform: translateY(-1px); box-shadow: 0 0 10px rgba(57,197,255,0.25); }
+    .chip.disabled { opacity: 0.5; pointer-events: none; }
+    .chip.github { border-color: rgba(255,255,255,0.18); }
+    .light-theme .chip.github { border-color: rgba(16,21,26,0.28); }
+    .chip.paper  { border-color: rgba(57,197,255,0.35); }
+    .chip.hf     { border-color: rgba(255,46,166,0.35); }
+    .chip.project-page { border-color: rgba(155,93,229,0.35); }
+
+    .sidebar .card h3 { margin-top: 0; }
+    .social-links a {
+      display: block; padding: 8px 0;
+      border-bottom: 1px dashed var(--border-color);
+      transition: border-color 0.6s ease, background-color 0.6s ease;
+    }
+    .social-links a:last-child { border-bottom: none; }
+    .social-links a:hover {
+      background: linear-gradient(90deg, rgba(57,197,255,0.08), rgba(155,93,229,0.08));
+      border-radius: 6px; padding-left: 6px;
+    }
+
+    .theme-toggle {
+      position: fixed; top: 20px; right: 20px; z-index: 999;
+      display: flex; align-items: center; gap: 10px;
+      border-radius: 22px; padding: 6px 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      backdrop-filter: var(--glass-blur);
+    }
+    .theme-toggle input { display: none; }
+    .theme-toggle label {
+      cursor: pointer; width: 42px; height: 22px;
+      background: #555; border-radius: 11px; position: relative; transition: background-color 0.3s ease;
+    }
+    .theme-toggle label::before {
+      content: ""; position: absolute; top: 3px; left: 3px;
+      width: 16px; height: 16px; background: white; border-radius: 50%; transition: transform 0.3s ease;
+    }
+    .theme-toggle input:checked + label { background: var(--terminal-green); }
+    .theme-toggle input:checked + label::before { transform: translateX(20px); }
+    .theme-toggle .icon { font-size: 0.9rem; opacity: 0.9; transition: color 0.6s ease; }
+
+    .animate-on-scroll { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
+
+    footer.footer {
+      grid-column: 1 / -1;
+      text-align: center; padding: 22px 0; color: #8ba1b4; font-size: 0.92rem;
+      border-top: 1px solid var(--border-color); margin-top: 22px;
+      transition: color 0.6s ease, border-color 0.6s ease, background-color 0.6s ease;
+    }
+
+    @media (max-width: 1024px) {
+      .container { grid-template-columns: 1fr; }
+      aside.sidebar { border-right: none; border-bottom: 1px solid rgba(57,197,255,0.25); padding: 0 0 12px 0; }
+      .terminal-header { grid-column: 1; }
+    }
+    a:focus-visible, button:focus-visible, [role="switch"]:focus-visible {
+      outline: 2px solid #39c5ff; outline-offset: 2px; border-radius: 6px;
+    }
+
+    /* ===== Section Art (logos) ===== */
+    .pub-section.has-art { position: relative; }
+    .pub-section.has-art .card-art {
+      position: absolute;
+      right: 8px;
+      top: 0;
+      width: clamp(160px, 26%, 240px);
+      height: 150px;
+      pointer-events: none;
+      z-index: 0; /* behind cards */
+      opacity: 0.95;
+    }
+    @media (max-width: 900px) {
+      .pub-section.has-art .card-art { display: none; }
+    }
+
+    /* Shared glass surface for art elements */
+    .card-art .window,
+    .card-art .term,
+    .card-art .panel {
+      position: absolute;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.06));
+      backdrop-filter: saturate(120%) blur(6px);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.25);
+    }
+    .light-theme .card-art .window,
+    .light-theme .card-art .term,
+    .light-theme .card-art .panel {
+      border-color: rgba(16,21,26,0.14);
+      background: linear-gradient(180deg, rgba(255,255,255,0.75), rgba(240,243,248,0.55));
+      box-shadow: 0 8px 18px rgba(0,0,0,0.10);
+    }
+
+    /* GUI demo */
+    .art-gui .window,
+    .art-gui .term,
+    .art-gui .panel {
+      backdrop-filter: none !important;
+    }
+    .art-gui .bar {
+      display: flex; gap: 6px; padding: 8px 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      background: linear-gradient(180deg, rgba(255,255,255,0.28), rgba(244,247,255,0.2));
+      border-top-left-radius: 12px; border-top-right-radius: 12px;
+    }
+    .light-theme .art-gui .bar { border-bottom-color: rgba(16,21,26,0.12); }
+    .art-gui .bar .r,.art-gui .bar .y,.art-gui .bar .g{ width:10px; height:10px; border-radius:50%; display:inline-block; }
+    .art-gui .bar .r{ background:#ff5f56; } 
+    .art-gui .bar .y{ background:#ffbd2e; } 
+    .art-gui .bar .g{ background:#28c840; }
+    .art-gui .window { background-image: var(--gui-grad); }
+    .art-gui .window .tiles{ display:flex; gap:12px; padding:16px 14px; color:#4f7cff; }
+    .light-theme .art-gui .window .tiles{ color:#325bff; }
+    .art-gui .window .tiles i{ font-size:18px; }
+    .art-gui .w2{ width:140px; height:85px; top: 0px; right: 4%; transform: rotate(8deg); }
+
+    /* Coding demo */
+    .art-code .panel { background-image: var(--code-grad); }
+    .art-code .p2{ width: 130px; height: 82px;  top: 16px; right: 5%;  transform: rotate(9deg); }
+    .art-code .rows { padding: 12px 12px; display: grid; gap: 8px; }
+    .art-code .rows span { height: 8px; border-radius: 6px; background: rgba(16,185,129,0.28); }
+    .art-code .rows span.alt { background: rgba(99,102,241,0.28); }
+    .art-code .rows span.w75{ width:75%; }
+    .art-code .rows span.w60{ width:60%; }
+    .art-code .rows span.w40{ width:40%; }
+    .art-code .glyph{
+      position:absolute; width:44px; height:44px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      color: #dbeafe;
+      background: radial-gradient(closest-side, rgba(99,102,241,0.35), transparent 70%), var(--code-grad);
+      border: 1px solid rgba(255,255,255,0.16);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25), inset 0 0 18px rgba(99,102,241,0.18);
+      backdrop-filter: saturate(120%) blur(4px);
+    }
+    .light-theme .art-code .glyph{ color:#0f172a; }
+    .art-code .g3{ right: 8%; top: 18%; transform: rotate(6deg); }
+
+    /* Thin fixed scroll progress bar */
+    #progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      width: 0%;
+      background: var(--terminal-blue);
+      box-shadow: 0 0 6px rgba(57,197,255,0.6);
+      z-index: 1000;
+    }
+
+    /* News list */
+    .news-list {
+      list-style: none;
+      display: grid;
+      gap: 8px;
+      margin-top: 8px;
+      padding-left: 16px;
+    }
+    .news-list li {
+      position: relative;
+    }
+    .news-list li::before {
+      content: "•";
+      position: absolute;
+      left: -16px;
+      color: #78c2ff;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="progress-bar" aria-hidden="true"></div>
+
+  <div class="theme-toggle" aria-label="Theme toggle">
+    <span class="icon"><i class="fa-solid fa-moon"></i></span>
+    <input type="checkbox" id="theme-toggle" aria-label="Toggle light theme" />
+    <label for="theme-toggle"></label>
+    <span class="icon"><i class="fa-solid fa-sun"></i></span>
+  </div>
+
+  <div class="container">
+    <header class="terminal-header">
+      <div class="terminal-title">
+        <span class="led red"><i class="fas fa-circle"></i></span>
+        <span class="led yellow"><i class="fas fa-circle"></i></span>
+        <span class="led green"><i class="fas fa-circle"></i></span>
+        <div class="typed-text">kaixinli@nus:~$ ./init_portfolio</div>
+      </div>
+
+      <div class="ascii-art">
+ _  __          _          _              _       ___ 
+| |/ /   __ _  (_) __  __ (_)  _ __      | |     |_ _|
+| ' /   / _` | | | \ \/ / | | | '_ \     | |      | | 
+| . \  | (_| | | |  >  <  | | | | | |    | |___   | | 
+|_|\_\  \__,_| |_| /_/\_\ |_| |_| |_|    |_____| |___|
+      </div>
+
+      <div class="terminal-bar">
+        <div>kaixinli@nus:~$ Building powerful models and datasets... <span class="cursor"></span></div>
+      </div>
+    </header>
+
+    <aside class="sidebar">
+      <section class="card animate-on-scroll" style="animation-delay: 0.2s">
+        <h3><i class="fas fa-link"></i> SOCIAL</h3>
+        <div class="social-links">
+          <a href="mailto:kaixinli2000@gmail.com"><i class="fas fa-fw fa-envelope" aria-hidden="true"></i> Email</a>
+          <a href="https://scholar.google.com/citations?user=crl_1igAAAAJ"><i class="ai ai-google-scholar ai-fw"></i> Google Scholar</a>
+          <a href="https://www.semanticscholar.org/author/Kaixin-Li/2263667967"><i class="ai ai-semantic-scholar ai-fw"></i> Semantic Scholar</a>
+          <a href="https://orcid.org/0009-0007-9842-3552"><i class="ai ai-orcid ai-fw"></i> ORCID</a>
+          <a href="https://github.com/likaixin2000"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a>
+          <a href="https://www.linkedin.com/in/kaixinli2000"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> LinkedIn</a>
+          <a href="https://twitter.com/kxli_2000"><i class="fab fa-fw fa-x-twitter" aria-hidden="true"></i> X (Twitter)</a>
+        </div>
+      </section>
+    </aside>
+
+    <main>
+      <section class="card animate-on-scroll">
+        <h2><i class="fas fa-terminal"></i> About me</h2>
+        <p>I am Kaixin LI, a PhD student at National University of Singapore, under supervision of <a href="https://www.comp.nus.edu.sg/cs/people/huangzy">Prof. HUANG Zhiyong</a>. I am deeply interested in autonomous agents, code generation and multimodality.</p>
+        <p style="margin-top: 10px;">I am now working as a research intern at <img src="https://upload.wikimedia.org/wikipedia/commons/6/69/Qwen_logo.svg" alt="Qwen AI logo" style="height: 1.5rem; vertical-align: text-bottom;"> <a href="https://qwen.ai/research">Qwen</a> supervised by <a href="https://huybery.github.io/">Binyuan Hui</a>, building <a href="https://github.com/QwenLM/Qwen3-Coder">Qwen-Coder</a> and <a href="https://github.com/QwenLM/Qwen3-VL">Qwen-VL</a>.</p>
+        <p style="margin-top: 10px;">Prior to this, I am lucky to have worked with <a href="https://www.comp.nus.edu.sg/cs/people/chuats/">Prof. Tat-Seng Chua</a>, <a href="https://michaelshieh.com/">Prof. Michael Qizhe Shieh</a> and <a href="https://jxhe.github.io/">Prof. Junxian He</a>.</p>
+        <div class="tag-row" style="margin-top: 12px;">
+          <span class="tag"><i class="fa-solid fa-display"></i> Computer Use Agents</span>
+          <span class="tag"><i class="fa-solid fa-crosshairs"></i> GUI Grounding</span>
+          <span class="tag"><i class="fa-solid fa-terminal"></i> (Multimodal) Code Generation</span>
+          <span class="tag"><i class="fa-solid fa-mug-saucer"></i> Front-end Agents</span>
+        </div>
+      </section>
+
+      <!-- NEWS -->
+      <section class="card animate-on-scroll" style="animation-delay: 0.05s">
+        <h2><i class="fa-solid fa-newspaper"></i> News</h2>
+        <ul class="news-list">
+          <li>Sep 2025: Released <a href="https://github.com/QwenLM/Qwen3-VL">Qwen3-VL</a> in which I am responsible for its coding capabilities.</li>
+          <li>Sep 2025: One paper <a href="https://github.com/YXB-NKU/SE-GUI">SE-GUI</a> accepted to NeurIPS 2025.</li>
+          <li>Aug 2025: Two papers accepted to EMNLP 2025.</li>
+          <li>Jul 2025: One paper <a href="https://github.com/likaixin2000/ScreenSpot-Pro-GUI-Grounding">ScreenSpot-Pro</a> accepted to ACMMM 2025 as oral presentation.</li>
+          <li>May 2025: Three papers accepted to ACL 2025.</li>
+        </ul>
+      </section>
+
+      <section class="card animate-on-scroll" style="animation-delay: 0.1s">
+        <h2><i class="fas fa-code"></i> SELECTED PUBLICATIONS</h2>
+
+        <!-- AGENTS & GUI INTERACTION with top-right GUI windows logo behind cards -->
+        <div class="pub-section has-art">
+          <h3 class="paper-category"><i class="fas fa-robot"></i> AGENTS & GUI INTERACTION</h3>
+
+          <div class="card-art art-gui" aria-hidden="true">
+            <div class="window w2">
+              <div class="bar"><span class="r"></span><span class="y"></span><span class="g"></span></div>
+              <div class="tiles"><i class="fas fa-globe"></i><i class="fas fa-mouse-pointer"></i><i class="fas fa-keyboard"></i></div>
+            </div>
+          </div>
+
+          <div class="pub-category">
+            <div class="pub-title">ScreenSpot-Pro: GUI Grounding for Professional High-Resolution Computer Use</div>
+            <div class="pub-authors"><span class="me">Kaixin Li</span>, Ziyang Meng, Hongzhan Lin, Ziyang Luo, Yuchen Tian, Jing Ma, Zhiyong Huang, Tat-Seng Chua</div>
+            <div class="pub-venue">ICLR 2025 Workshop on Reasoning and Planning for Large Language Models</div>
+            <div class="tag-row">
+              <a class="chip github" href="https://github.com/likaixin2000/ScreenSpot-Pro-GUI-Grounding"><i class="fab fa-github"></i> GitHub</a>
+              <a class="chip paper" href="https://likaixin2000.github.io/papers/ScreenSpot_Pro.pdf"><i class="fa-regular fa-file-lines"></i> Paper</a>
+              <a class="chip hf" href="https://huggingface.co/datasets/likaixin/ScreenSpot-Pro"><span>🤗</span> Hugging Face</a>
+              <span class="tag used"><i class="fa-solid fa-bolt"></i> Used by Qwen2.5-VL, Qwen3-VL, Microsoft Omniparser, Seed-VL</span>
+              <span class="tag"><i class="fa-solid fa-download"></i> 30,000+ downloads</span>
+            </div>
+          </div>
+
+          <div class="pub-category">
+            <div class="pub-title">Enhancing Visual Grounding for GUI Agents via Self-Evolutionary Reinforcement Learning</div>
+            <div class="pub-authors">Xinbin Yuan, Jian Zhang, <span class="me">Kaixin Li</span>, Zhuoxuan Cai, Jie Chen, Lujian Yao, Enguang Wang, Qibin Hou, Jinwei Chen, Peng-Tao Jiang, Bo Li</div>
+            <div class="pub-venue">NeurIPS 2025</div>
+            <div class="tag-row">
+              <a class="chip paper" href="https://arxiv.org/pdf/2505.12370"><i class="fa-regular fa-file-lines"></i> Paper</a>
+              <a class="chip github" href="https://github.com/YXB-NKU/SE-GUI"><i class="fab fa-github"></i> GitHub</a>
+              <a class="chip hf" href="https://huggingface.co/XinBB/SE-GUI-7B" tabindex="-1"><span>🤗</span> SE-GUI 7B</a>
+              <a class="chip hf" href="https://huggingface.co/XinBB/SE-GUI-3B" tabindex="-1"><span>🤗</span> SE-GUI 3B</a>
+            </div>
+          </div>
+
+          <div class="pub-category">
+            <div class="pub-title">Grounding Computer Use Agents on Human Demonstrations</div>
+            <div class="pub-authors">Aarash Feizi, Shravan Nayak, Xiangru Jian, Kevin Qinghong Lin, <span class="me">Kaixin Li</span>, Rabiul Awal, Xing Han Lù, Johan Obando-Ceron, Juan A. Rodriguez, Nicolas Chapados, David Vazquez, Adriana Romero-Soriano, Reihaneh Rabbany, Perouz Taslakian, Christopher Pal, Spandana Gella, Sai Rajeswara</div>
+            <div class="pub-venue">arXiv</div>
+            <div class="tag-row">
+              <a class="chip paper disabled" href="#"><i class="fa-regular fa-file-lines"></i> Paper</a>
+              <!-- <a class="chip project-page" href="https://robibutler.github.io/"><i class="fa-solid fa-globe"></i> Project Page</a> -->
+            </div>
+          </div>
+
+          <div class="pub-category">
+            <div class="pub-title">HackWorld: Evaluating Computer-Use Agents on Exploiting Web Application Vulnerabilities</div>
+            <div class="pub-authors">Xiaoxue Ren*, Penghao Jiang*, <span class="me">Kaixin Li*</span>, Zhiyong Huang, Xiaoning Du, Jiaojiao Jiang, Zhenchang Xing, Jiamou Sun, Terry Yue Zhuo</div>
+            <div class="pub-venue">arXiv</div>
+            <div class="tag-row">
+              <a class="chip paper disabled" href="#"><i class="fa-regular fa-file-lines"></i> Paper</a>
+            </div>
+          </div>
+
+          <div class="pub-category">
+            <div class="pub-title">Robi Butler: Remote Multimodal Interactions with Household Robot Assistant</div>
+            <div class="pub-authors">Anxing Xiao, Nuwan Janaka, Tiancheng Hu, Anshul Gupta, <span class="me">Kaixin Li</span>, Chen Yu, David Hsu</div>
+            <div class="pub-venue">ICRA 2025</div>
+            <div class="tag-row">
+              <a class="chip paper" href="https://arxiv.org/pdf/2409.20548"><i class="fa-regular fa-file-lines"></i> Paper</a>
+              <a class="chip project-page" href="https://robibutler.github.io/"><i class="fa-solid fa-globe"></i> Project Page</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- CODING block with top-right logo behind cards -->
+        <div class="pub-section has-art">
+          <h3 class="paper-category"><i class="fas fa-laptop-code"></i> CODING & CODE INTELLIGENCE</h3>
+
+          <div class="card-art art-code" aria-hidden="true">
+            <div class="panel p2">
+              <div class="rows">
+                <span class="w40"></span>
+                <span class="w60 alt"></span>
+                <span class="w75"></span>
+              </div>
+            </div>
+            <div class="glyph g3"><i class="fa-solid fa-terminal"></i></div>
+          </div>
+
+          <div class="pub-category">
+            <div class="pub-title">MMCode: Evaluating Multi-Modal Code Large Language Models with Visually Rich Programming Problems</div>
+            <div class="pub-authors"><span class="me">Kaixin Li</span>, Yuchen Tian, Qisheng Hu, Ziyang Luo, Zhiyong Huang, Jing Ma</div>
+            <div class="pub-venue">EMNLP 2024 Findings; ICLR 2025 Workshop on Reasoning and Planning for Large Language Models</div>
+            <div class="tag-row">
+              <a class="chip github" href="https://github.com/happylkx/MMCode"><i class="fab fa-github"></i> GitHub</a>
+              <a class="chip paper" href="https://arxiv.org/pdf/2404.09486"><i class="fa-regular fa-file-lines"></i> Paper</a>
+              <a class="chip hf" href="https://huggingface.co/datasets/likaixin/MMCode"><span>🤗</span> Hugging Face</a>
+              <span class="tag used"><i class="fa-solid fa-bolt"></i> Used by Qwen2.5-VL</span>
+            </div>
+          </div>
+
+          <div class="pub-category">
+            <div class="pub-title">BigCodeArena: Unveiling More Reliable Human Preferences in Code Generation via Execution</div>
+            <div class="pub-authors">Terry Yue Zhuo, Xiaolong Jin, Hange Liu, Juyong Jiang, Tianyang Liu, Chen GONG, Bhupesh Bishnoi, Vaisakhi Mishra, Marek Suppa, Noah Ziems, Saiteja Utpala, Ming Xu, Guangyu Song, <span class="me">Kaixin Li</span>, Yuhan Cao, Bo Liu, Zheng Liu, Sabina Abdurakhmanova, Wenhao Yu, Mengzhao Jia, Jihan Yao, Kenneth Hamilton, Kumar Shridhar, Vu Minh Chien, Dingmin Wang, Jiawei Liu, Zijian Wang, Qian Liu, Binyuan Hui, Meg Risdal, Ahsen Khaliq, Atin Sood, Zhenchang Xing, Wasi Uddin Ahmad, John C. Grundy, David Lo, Banghua Zhu, Xiaoning Du, Torsten Scholak, Leandro Von Werra</div>
+            <div class="pub-venue">arXiv</div>
+            <div class="tag-row">
+              <a class="chip github disabled" href=""><i class="fab fa-github"></i> GitHub</a>
+              <a class="chip paper disabled" href="#"><i class="fa-regular fa-file-lines"></i> Paper</a>
+              <a class="chip hf disabled" href="#" tabindex="-1"><span>🤗</span> Hugging Face</a>
+            </div>
+          </div>
+
+          <div class="pub-category">
+            <div class="pub-title">Tree-of-Evolution: Tree-Structured Instruction Evolution for Code Generation in Large Language Models</div>
+            <div class="pub-authors">Ziyang Luo, <span class="me">Kaixin Li</span>, Hongzhan Lin, Yuchen Tian, Mohan Kankanhalli, Jing Ma</div>
+            <div class="pub-venue">ACL 2025</div>
+            <div class="tag-row">
+              <a class="chip github" href="#"><i class="fab fa-github"></i> GitHub</a>
+              <a class="chip paper" href="https://aclanthology.org/2025.acl-long.14.pdf"><i class="fa-regular fa-file-lines"></i> Paper</a>
+            </div>
+          </div>
+
+          <div class="pub-category">
+            <div class="pub-title">MCTS-Judge: Test-Time Scaling in LLM-as-a-Judge for Code Correctness Evaluation</div>
+            <div class="pub-authors">Yutong Wang, Pengliang Ji, Chaoqun Yang, <span class="me">Kaixin Li</span>, Ming Hu, Jiaoyang Li, Guillaume Sartoretti</div>
+            <div class="pub-venue">arXiv preprint arXiv:2502.12468</div>
+            <div class="tag-row">
+              <a class="chip paper" href="https://arxiv.org/pdf/2502.12468"><i class="fa-regular fa-file-lines"></i> Paper</a>
+            </div>
+          </div>
+
+          <div class="pub-category">
+            <div class="pub-title">InstructCoder: Empowering Language Models for Code Editing</div>
+            <div class="pub-authors"><span class="me">Kaixin Li</span>*, Qisheng Hu*, Xu Zhao, Yuxi Xie, Tiedong Liu, Hui Chen, Qizhe Xie*, Junxian He*</div>
+            <div class="pub-venue">ACL 2024 SRW; EMNLP 2023 Reject with Score 4 4 4 / 5</div>
+            <div class="tag-row">
+              <span class="tag highlight"><i class="fa-solid fa-microphone-lines"></i> Oral Presentation</span>
+              <a class="chip github" href="https://github.com/qishenghu/CodeInstruct"><i class="fab fa-github"></i> GitHub</a>
+              <a class="chip paper" href="https://arxiv.org/abs/2310.20329"><i class="fa-regular fa-file-lines"></i> Paper</a>
+              <a class="chip hf" href="https://huggingface.co/datasets/likaixin/InstructCoder"><span>🤗</span> Hugging Face</a>
+              <a class="chip paper" href="https://openreview.net/forum?id=islVqaCzfa"><i class="fa-regular fa-file-lines"></i> OpenReview</a>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <section class="card animate-on-scroll" style="animation-delay: 0.2s">
+        <h2><i class="fa-solid fa-user-check"></i> PAPER REVIEWER</h2>
+        <p>Areas: Code intelligence, multimodal understanding/generation, GUI agents.</p>
+        <div class="tag-row" style="margin-top: 10px;">
+          <span class="tag"><i class="fa-solid fa-clipboard-check"></i> ICLR 2024, 2025</span>
+          <span class="tag"><i class="fa-solid fa-clipboard-check"></i> CVPR 2025</span>
+          <span class="tag"><i class="fa-solid fa-clipboard-check"></i> ACL 2025</span>
+          <span class="tag"><i class="fa-solid fa-clipboard-check"></i> EMNLP 2025</span>
+          <span class="tag"><i class="fa-solid fa-clipboard-check"></i> AAAI 2025</span>
+          <span class="tag"><i class="fa-solid fa-clipboard-check"></i> ACMMM 2025</span>
+        </div>
+      </section>
+
+      <section class="card animate-on-scroll" style="animation-delay: 0.3s">
+        <h2><i class="fa-solid fa-box-open"></i> OPEN SOURCE</h2>
+
+        <div class="pub-category">
+          <div class="pub-title">TACO-verified</div>
+          <div class="pub-venue">Verified code contest problems and solutions. 5,000+ downloads; widely used by the community and by <a href="https://deepcoder.org/">DeepCoder</a></div>
+          <div class="tag-row">
+            <a class="chip hf" href="https://huggingface.co/datasets/likaixin/TACO-verified" tabindex="-1"><span>🤗</span> Dataset</a>
+          </div>
+        </div>
+
+        <div class="pub-category">
+          <div class="pub-title">IconStack-48M</div>
+          <div class="pub-venue">The largest icon dataset with 48 million images, SVG, captions and rich metadata.</div>
+          <div class="tag-row">
+            <a class="chip hf" href="https://huggingface.co/datasets/likaixin/IconStack-48M-Rendered-Train" tabindex="-1"><span>🤗</span> Training Set</a>
+            <a class="chip hf" href="https://huggingface.co/datasets/likaixin/IconStack-48M-Rendered-Dev" tabindex="-1"><span>🤗</span> Dev Set</a>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p>Last updated: <span>September 28, 2025</span></p>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    // Scroll-based reveal (robust on-load behavior)
+    const animateElements = document.querySelectorAll('.animate-on-scroll');
+
+    const revealOnLoad = () => {
+      animateElements.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < (window.innerHeight * 0.98)) {
+          el.classList.add('visible');
+        }
+      });
+    };
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting || entry.intersectionRatio > 0) {
+            entry.target.classList.add('visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, {
+        root: null,
+        threshold: 0,
+        rootMargin: '0px 0px -20% 0px'
+      });
+
+      animateElements.forEach(el => observer.observe(el));
+
+      document.addEventListener('DOMContentLoaded', revealOnLoad);
+      window.addEventListener('load', revealOnLoad);
+      window.addEventListener('resize', revealOnLoad);
+    } else {
+      animateElements.forEach(el => el.classList.add('visible'));
+    }
+
+    // Theme toggle with persistence
+    const themeToggle = document.getElementById('theme-toggle');
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+      document.body.classList.add('light-theme');
+      themeToggle.checked = true;
+    }
+    themeToggle.addEventListener('change', function () {
+      document.body.classList.add('theme-switching');
+      if (this.checked) {
+        document.body.classList.add('light-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        document.body.classList.remove('light-theme');
+        localStorage.setItem('theme', 'dark');
+      }
+      setTimeout(() => document.body.classList.remove('theme-switching'), 700);
+    });
+
+    // Social links entrance
+    const socialLinks = document.querySelectorAll('.social-links a');
+    socialLinks.forEach((link, i) => {
+      link.style.opacity = '0';
+      link.style.transform = 'translateX(-8px)';
+      link.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+      setTimeout(() => {
+        link.style.opacity = '1';
+        link.style.transform = 'translateX(0)';
+      }, 250 + i * 60);
+    });
+
+    // Scroll progress bar
+    const progressBar = document.getElementById('progress-bar');
+    const updateProgress = () => {
+      const doc = document.documentElement;
+      const scrollTop = doc.scrollTop || document.body.scrollTop;
+      const scrollHeight = (doc.scrollHeight || document.body.scrollHeight) - doc.clientHeight;
+      const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+      progressBar.style.width = progress + '%';
+    };
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    window.addEventListener('resize', updateProgress);
+    document.addEventListener('DOMContentLoaded', updateProgress);
+
+    // Make all links open in a new tab safely (skip disabled)
+    (function enforceNewTabLinks() {
+      const links = document.querySelectorAll('a[href]:not(.disabled)');
+      links.forEach(a => {
+        a.target = '_blank';
+        const rel = a.getAttribute('rel') || '';
+        if (!/noopener/.test(rel) || !/noreferrer/.test(rel)) {
+          a.setAttribute('rel', (rel ? rel + ' ' : '') + 'noopener noreferrer');
+        }
+      });
+    })();
+  </script>
+
+  <!-- <script type="text/javascript" id="mapmyvisitors" src="https://mapmyvisitors.com/map.js?cl=ffffff&amp;w=280&amp;t=tt&amp;d=VlQttvlkH_W3vIiktNG_qPJdJCnMZK1nIp62BVs-iKY&amp;co=2bc2ff&amp;cmo=ff6a6a&amp;cmn=43d343"></script> -->
+</body>
+</html>
