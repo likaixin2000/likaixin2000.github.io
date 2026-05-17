@@ -2,819 +2,463 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Kaixin LI | Agent and Code Intelligence Researcher</title>
-
-  <!-- Icons and Fonts -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kaixin Li | Academic Portfolio</title>
+  
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.2/css/academicons.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Google Fonts: Inter for a clean, modern academic look -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     /* =======================
-       1) Design tokens
+       Base & Reset
     ======================= */
     :root {
-      --background: #0b0f14;
-      --text: #e6f1ff;
-
-      --blue: #39c5ff;
-      --purple: #9b5de5;
-      --pink: #ff2ea6;
-      --green: #59f764;
-      --yellow: #ffd166;
-      --gold: #FFD700;
-
-      --border-color: rgba(255, 255, 255, 0.10);
-      --card-radius: 14px;
-      --shadow-1: 0 6px 20px rgba(0,0,0,0.25);
-      --shadow-2: 0 12px 30px rgba(0,0,0,0.32);
-
-      --mm-gradient: linear-gradient(90deg, var(--blue) 0%, var(--pink) 50%, var(--purple) 100%);
-      --card-bg-dark: rgba(13, 17, 23, 0.55);
-      --card-bg-light: rgba(255, 255, 255, 0.88);
-      --bar-bg-dark: rgba(18, 24, 32, 0.7);
-      --bar-bg-light: rgba(240, 243, 248, 0.92);
-
-      --glass-blur: saturate(120%) blur(10px);
-      --tag-text: #8bd9ff;
-      --chip-text: #dbeafe;
-
-      --gui-grad: linear-gradient(135deg, rgba(57,197,255,0.28), rgba(255,46,166,0.22), rgba(155,93,229,0.24));
-      --code-grad: radial-gradient(120px at 30% 30%, rgb(191 212 255 / 28%), transparent 60%), linear-gradient(135deg, rgba(99,102,241,0.22), rgba(16,185,129,0.22));
+      --text-main: #222222;
+      --text-muted: #555555;
+      --link-color: #0056b3;
+      --link-hover: #003d82;
+      --bg-color: #ffffff;
+      --border-color: #e5e5e5;
     }
 
-    .light-theme {
-      --background: #f7f9fc;
-      --text: #10151a;
-      --green: #2563eb;
-      --border-color: rgba(16, 21, 26, 0.12);
-      --tag-text: #0f172a;
-      --chip-text: #0f172a;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    /* =======================
-       2) Base and reset
-    ======================= */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; }
     body {
-      background: var(--background);
-      color: var(--text);
-      font-family: 'Fira Code', monospace;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text-main);
+      background-color: var(--bg-color);
       line-height: 1.6;
-      transition: background 0.6s ease, color 0.6s ease;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
     }
-    img { max-width: 100%; height: auto; }
-    a { color: var(--blue); text-decoration: none; transition: color 0.25s ease, text-shadow 0.25s ease; }
-    a:hover { color: var(--green); text-shadow: 0 0 6px rgba(37,99,235,0.45); }
-    a:focus-visible, button:focus-visible, [role="switch"]:focus-visible {
-      outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 6px;
+
+    a {
+      color: var(--link-color);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    a:hover {
+      color: var(--link-hover);
+      text-decoration: underline;
     }
 
     /* =======================
-       3) Layout
+       Layout
     ======================= */
-    .page {
-      /* Global safe-area aware padding */
-      padding-inline-start: max(16px, env(safe-area-inset-left));
-      padding-inline-end:   max(16px, env(safe-area-inset-right));
-      padding-block: 20px;
-    }
-
     .container {
-      max-width: 1200px;
+      max-width: 900px;
       margin: 0 auto;
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      gap: 22px;
-      align-items: start;
+      padding: 60px 20px;
+      display: flex;
+      gap: 50px;
     }
 
-    @media (max-width: 1024px) {
-      .container { grid-template-columns: 1fr; }
-    }
-
-    /* Under ~600px, move gutter from page to container so borders never hug the viewport */
-    @media (max-width: 600px) {
-      .page {
-        padding-inline-start: 0;
-        padding-inline-end: 0;
-      }
+    @media (max-width: 768px) {
       .container {
-        padding-inline-start: max(16px, env(safe-area-inset-left));
-        padding-inline-end:   max(16px, env(safe-area-inset-right));
+        flex-direction: column;
+        padding: 40px 20px;
+        gap: 30px;
       }
     }
-
-    aside.sidebar {
-      padding: 0 6px 6px 0;
-      border-right: 1px solid rgba(57,197,255,0.25);
-      transition: border-color 0.6s ease;
-    }
-    @media (min-width: 1025px) {
-      aside.sidebar {
-        position: sticky;
-        top: 20px;
-        align-self: start;
-      }
-    }
-    @media (max-width: 1024px) {
-      aside.sidebar { border-right: none; border-bottom: 1px solid rgba(57,197,255,0.25); padding: 0 0 12px 0; }
-    }
-
-    main { padding-bottom: 10px; }
 
     /* =======================
-       4) Components
+       Sidebar
     ======================= */
-    /* Theme toggle */
-    .theme-toggle {
-      position: fixed;
-      top: calc(env(safe-area-inset-top) + 16px);
-      right: calc(env(safe-area-inset-right) + 16px);
-      z-index: 999;
+    .sidebar {
+      flex: 0 0 220px;
+    }
+
+    .profile-name {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+      color: var(--text-main);
+    }
+
+    .profile-title {
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    .social-links {
+      list-style: none;
+      font-size: 0.95rem;
+    }
+
+    .social-links li {
+      margin-bottom: 10px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      border: 1px solid var(--border-color);
-      border-radius: 22px;
-      padding: 6px 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-      backdrop-filter: var(--glass-blur);
-      background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
-    }
-    .theme-toggle input { display: none; }
-    .theme-toggle label {
-      cursor: pointer; width: 42px; height: 22px;
-      background: #555; border-radius: 11px; position: relative; transition: background-color 0.3s ease;
-    }
-    .theme-toggle label::before {
-      content: ""; position: absolute; top: 3px; left: 3px;
-      width: 16px; height: 16px; background: white; border-radius: 50%; transition: transform 0.3s ease;
-    }
-    .theme-toggle input:checked + label { background: var(--green); }
-    .theme-toggle input:checked + label::before { transform: translateX(20px); }
-    .theme-toggle .icon { font-size: 0.9rem; opacity: 0.9; transition: color 0.6s ease; }
-
-    /* Progress bar */
-    #progress-bar {
-      position: fixed; top: 0; left: 0;
-      height: 4px; width: 0%;
-      background: var(--blue);
-      box-shadow: 0 0 6px rgba(57,197,255,0.6);
-      z-index: 1000;
+      gap: 8px;
     }
 
-    /* Terminal header */
-    .terminal-header {
-      grid-column: 1 / -1;
-      position: relative;
-      padding: clamp(16px, 3.8vw, 22px);
-      border: 1px solid transparent;
-      border-image: var(--mm-gradient) 1;
-      border-radius: 12px;
-      margin-bottom: 10px;
-      background: linear-gradient(185deg, rgba(57,197,255,0.06), rgba(155,93,229,0.05));
-      box-shadow: 0 0 24px rgba(57,197,255,0.15), 0 0 24px rgba(255,46,166,0.10);
-    }
-    .terminal-title {
-      display: flex; align-items: center; gap: 8px;
-      margin-bottom: 12px; font-size: clamp(0.86rem, 2.8vw, 1rem);
-      color: #9fbad1;
-    }
-    .terminal-title .led { font-size: 10px; }
-    .terminal-title .led.red   { color: #ff5f56; }
-    .terminal-title .led.yellow{ color: #ffbd2e; }
-    .terminal-title .led.green { color: #27c93f; }
-    .terminal-title .typed-text { color: var(--text); opacity: 0.9; }
-
-    .ascii-art {
-      /* No scrollbar; scale to fit on small screens */
-      font-size: clamp(0.58rem, 2.0vw, 0.78rem);
-      letter-spacing: clamp(0.3px, 0.4vw, 1.2px);
-      color: transparent;
-      background-image: var(--mm-gradient);
-      background-size: 200% 100%;
-      -webkit-background-clip: text;
-      background-clip: text;
-      animation: gradientMove 8s ease-in-out infinite alternate;
-      margin: 12px 0 12px;
+    .social-links i {
+      color: var(--text-muted);
+      width: 16px;
       text-align: center;
-      line-height: 1.2;
-      white-space: pre;
-      font-weight: 700;
-      overflow: hidden; /* remove scrollbar and prevent spill */
-    }
-    @keyframes gradientMove {
-      from { background-position: 0% 50%; }
-      to   { background-position: 100% 50%; }
     }
 
-    .terminal-bar {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 8px 12px;
-      border-radius: 10px;
-      border: 1px solid var(--border-color);
-      font-size: clamp(0.82rem, 2.6vw, 0.95rem);
-      position: relative;
-    }
-    .terminal-bar::before, .terminal-bar::after {
-      content: ""; position: absolute; inset: 0; border-radius: 10px;
-      pointer-events: none;
-      transition: opacity 0.4s ease; /* smooth crossfade on theme switch */
-    }
-    .terminal-bar::before { background-color: var(--bar-bg-dark); opacity: 0.9; }
-    .terminal-bar::after  { background-color: var(--bar-bg-light); opacity: 0; }
-    .light-theme .terminal-bar::before { opacity: 0; }
-    .light-theme .terminal-bar::after  { opacity: 0.9; }
-
-    .cursor {
-      display: inline-block;
-      width: 0.7rem; height: 1rem;
-      background: var(--blue);
-      box-shadow: 0 0 10px rgba(57,197,255,0.6);
-      animation: agentPulse 1.2s infinite;
-      vertical-align: text-bottom;
-      margin-left: -5px;
-      margin-bottom: 2.5px;
-      border-radius: 2px;
-    }
-    @keyframes agentPulse {
-      0%,100% { box-shadow: 0 0 8px rgba(57,197,255,0.6); }
-      50%     { box-shadow: 0 0 14px rgba(255,46,166,0.6); }
+    /* =======================
+       Main Content
+    ======================= */
+    main {
+      flex: 1;
     }
 
-    /* Cards */
-    .card {
-      position: relative;
-      overflow: hidden;
-      border-radius: var(--card-radius);
-      border: 1px solid var(--border-color);
-      padding: 18px;
-      backdrop-filter: var(--glass-blur);
-      margin: 16px 0;
-      box-shadow: var(--shadow-1);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .card:hover { transform: translateY(-2px); box-shadow: var(--shadow-2); }
-
-    /* Headings */
-    h2, h3 {
-      margin: 10px 0 12px;
-      position: relative;
-      padding-left: 16px;
-    }
-    h2::before, h3::before {
-      content: "";
-      position: absolute; left: 0; top: 50%; transform: translateY(-50%);
-      width: 8px; height: 8px;
-      background: var(--mm-gradient);
-      border-radius: 50%;
-      box-shadow: 0 0 10px rgba(57,197,255,0.4);
-    }
-    h2 { font-size: 1.25rem; }
-    h3 { font-size: 1.05rem; color: #b9d6ee; }
-    .light-theme h3 { color: #0f172a; }
-
-    /* Social links */
-    .sidebar .card h3 { margin-top: 0; }
-    .social-links a {
-      display: block; padding: 8px 0;
-      border-bottom: 1px dashed var(--border-color);
-      transition: border-color 0.6s ease, background-color 0.3s ease, padding-left 0.2s ease;
-    }
-    .social-links a:last-child { border-bottom: none; }
-    .social-links a:hover {
-      background: linear-gradient(90deg, rgba(57,197,255,0.08), rgba(155,93,229,0.08));
-      border-radius: 6px; padding-left: 6px;
+    section {
+      margin-bottom: 40px;
     }
 
-    /* Tag row, tags and chips: allow wrapping to avoid overflow */
-    .tag-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 6px;
-    }
-    .tag, .chip {
-      display: inline-flex; align-items: center; gap: 6px;
-      border-radius: 8px;
-      padding: 4px 8px;
-      font-size: 0.76rem;
-      font-weight: 500;
-      white-space: normal;
-      overflow-wrap: anywhere;
-      word-break: break-word;
-      max-width: 100%;
-      transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-    }
-    .tag {
-      background: linear-gradient(90deg, rgba(57,197,255,0.12), rgba(255,46,166,0.12));
-      border: 1px solid rgba(255,255,255,0.12);
-      color: var(--tag-text);
-    }
-    .chip {
-      background-color: rgba(255,255,255,0.06);
-      color: var(--chip-text);
-      border: 1px solid rgba(255,255,255,0.14);
-    }
-    .light-theme .chip.github { border-color: rgba(16,21,26,0.28); }
-    .chip:hover, .tag:hover { transform: translateY(-1px); box-shadow: 0 0 10px rgba(57,197,255,0.25); }
-    .chip.disabled { opacity: 0.5; pointer-events: none; }
-    .chip.github { border-color: rgba(255,255,255,0.18); }
-    .chip.paper  { border-color: rgba(57,197,255,0.35); }
-    .chip.hf     { border-color: rgba(255,46,166,0.35); }
-    .chip.project-page { border-color: rgba(155,93,229,0.35); }
-    .tag.highlight { border-color: var(--pink); color: #ff87c9; }
-    .tag.used { border-color: var(--blue); color: #0ea5e9; }
-    .tag.award { border-color: var(--gold); color: #b08900; }
-
-    /* Publications */
-    .pub-section { margin-bottom: 24px; position: relative; }
-    h3.paper-category { margin-top: 1rem; margin-bottom: 1.6rem; }
-    .pub-category {
-      position: relative;
-      padding: 16px 16px 12px 22px;
-      margin-bottom: 14px;
-      border: 1px solid var(--border-color);
-      border-radius: var(--card-radius);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.22);
-      backdrop-filter: var(--glass-blur);
-      transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease, color 0.3s ease;
-    }
-    .pub-category::before {
-      content: "";
-      position: absolute; left: 0; top: 0; bottom: 0;
-      width: 4px;
-      background-image: var(--mm-gradient);
-      border-radius: 12px 0 0 12px;
-      opacity: 0.95;
-    }
-    .pub-category:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(0,0,0,0.28); }
-
-    .pub-title { font-weight: 700; color: #dbeafe; margin-bottom: 6px; font-size: 1.02rem; }
-    .light-theme .pub-title { color: #0f172a; }
-    .pub-authors { color: #a8b7c7; font-size: 0.92rem; margin-bottom: 4px; }
-    .pub-authors .me {
-      font-weight: 700;
-      color: var(--blue);
-      background: rgba(57,197,255,0.12);
-      padding: 0 4px;
-      border-radius: 4px;
-    }
-    .light-theme .pub-authors .me {
-      color: #0f172a;
-      background: rgba(37,99,235,0.12);
-    }
-    .pub-venue { color: var(--blue); font-style: italic; margin-bottom: 8px; font-size: 0.92rem; }
-
-    /* Section art (logos) */
-    .card-art {
-      position: absolute;
-      right: 8px;
-      top: 0;
-      width: clamp(160px, 26%, 240px);
-      height: 150px;
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.95;
-    }
-    @media (max-width: 900px) {
-      .card-art { display: none; }
-    }
-    .card-art .window, .card-art .term, .card-art .panel {
-      position: absolute;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.06));
-      backdrop-filter: saturate(120%) blur(6px);
-      box-shadow: 0 10px 24px rgba(0,0,0,0.25);
-    }
-    .light-theme .card-art .window, .light-theme .card-art .term, .light-theme .card-art .panel {
-      border-color: rgba(16,21,26,0.14);
-      background: linear-gradient(180deg, rgba(255,255,255,0.75), rgba(240,243,248,0.55));
-      box-shadow: 0 8px 18px rgba(0,0,0,0.10);
+    h2 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+      color: var(--text-main);
     }
 
-    /* GUI art */
-    .art-gui .bar {
-      display: flex; gap: 6px; padding: 8px 10px;
-      border-bottom: 1px solid rgba(255,255,255,0.12);
-      background: linear-gradient(180deg, rgba(255,255,255,0.28), rgba(244,247,255,0.2));
-      border-top-left-radius: 12px; border-top-right-radius: 12px;
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin: 25px 0 15px 0;
+      color: var(--text-main);
     }
-    .light-theme .art-gui .bar { border-bottom-color: rgba(16,21,26,0.12); }
-    .art-gui .bar .r,.art-gui .bar .y,.art-gui .bar .g{ width:10px; height:10px; border-radius:50%; display:inline-block; }
-    .art-gui .bar .r{ background:#ff5f56; } 
-    .art-gui .bar .y{ background:#ffbd2e; } 
-    .art-gui .bar .g{ background:#28c840; }
-    .art-gui .window { background-image: var(--gui-grad); }
-    .art-gui .window .tiles{ display:flex; gap:12px; padding:16px 14px; color:#4f7cff; }
-    .light-theme .art-gui .window .tiles{ color:#325bff; }
-    .art-gui .window .tiles i{ font-size:18px; }
-    .art-gui .w2{ width:140px; height:85px; top: 0px; right: 4%; transform: rotate(8deg); }
 
-    /* Coding art */
-    .art-code .panel { background-image: var(--code-grad); }
-    .art-code .p2{ width: 130px; height: 82px; top: 16px; right: 5%; transform: rotate(9deg); }
-    .art-code .rows { padding: 12px 12px; display: grid; gap: 8px; }
-    .art-code .rows span { height: 8px; border-radius: 6px; background: rgba(16,185,129,0.28); }
-    .art-code .rows span.alt { background: rgba(99,102,241,0.28); }
-    .art-code .rows span.w75{ width:75%; }
-    .art-code .rows span.w60{ width:60%; }
-    .art-code .rows span.w40{ width:40%; }
-    .art-code .glyph{
-      position:absolute; width:44px; height:44px; border-radius:50%;
-      display:flex; align-items:center; justify-content:center;
-      color: #dbeafe;
-      background: radial-gradient(closest-side, rgba(99,102,241,0.35), transparent 70%), var(--code-grad);
-      border: 1px solid rgba(255,255,255,0.16);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.25), inset 0 0 18px rgba(99,102,241,0.18);
-      backdrop-filter: saturate(120%) blur(4px);
+    p {
+      margin-bottom: 15px;
+      color: var(--text-main);
     }
-    .light-theme .art-code .glyph{ color:#0f172a; }
-    .art-code .g3{ right: 8%; top: 18%; transform: rotate(6deg); }
 
-    /* News list */
+    /* News */
     .news-list {
       list-style: none;
-      display: grid;
-      gap: 8px;
-      margin-top: 8px;
-      padding-left: 16px;
     }
-    .news-list li { position: relative; }
-    .news-list li::before { content: "•"; position: absolute; left: -16px; color: #78c2ff; }
+
+    .news-list li {
+      margin-bottom: 10px;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .news-list li::before {
+      content: "—";
+      position: absolute;
+      left: 0;
+      color: var(--text-muted);
+    }
+
+    .news-date {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    /* Publications */
+    .pub-item {
+      margin-bottom: 24px;
+    }
+
+    .pub-title {
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-bottom: 4px;
+    }
+
+    .pub-authors {
+      font-size: 0.95rem;
+      color: var(--text-main);
+      margin-bottom: 2px;
+    }
+
+    .pub-authors .me {
+      font-weight: 700;
+    }
+
+    .pub-venue {
+      font-size: 0.95rem;
+      font-style: italic;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .pub-links {
+      font-size: 0.9rem;
+      font-family: monospace;
+      margin-bottom: 6px;
+    }
+
+    .pub-links a {
+      margin-right: 10px;
+      color: var(--link-color);
+    }
+    
+    .pub-note {
+      display: inline-block;
+      margin-left: 5px;
+      font-size: 0.85rem;
+      color: #d9534f;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Impact Callout Box */
+    .pub-impact {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      background-color: #f8f9fa;
+      padding: 8px 12px;
+      border-left: 3px solid var(--link-color);
+      border-radius: 4px;
+      margin-top: 6px;
+      display: inline-block;
+      line-height: 1.5;
+    }
+
+    .pub-impact i {
+      width: 14px;
+      text-align: center;
+      margin-right: 4px;
+    }
+
+    .pub-impact .fa-bolt { color: #f59e0b; }
+    .pub-impact .fa-download { color: #3b82f6; }
+    .pub-impact .fa-star { color: #eab308; }
+
+    /* Services & Open Source */
+    .service-list, .os-list {
+      list-style: disc;
+      padding-left: 20px;
+      margin-bottom: 15px;
+    }
+    
+    .service-list li, .os-list li {
+      margin-bottom: 8px;
+    }
 
     /* Footer */
-    footer.footer {
-      grid-column: 1 / -1;
-      text-align: center; padding: 22px 0; color: #8ba1b4; font-size: 0.92rem;
-      border-top: 1px solid var(--border-color); margin-top: 22px;
-    }
-
-    /* =======================
-       5) Utilities
-    ======================= */
-    .animate-on-scroll { opacity: 0; transform: translateY(18px); transition: opacity 0.4s ease, transform 0.4s ease; }
-    .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
-
-    /* =======================
-       6) Responsive tweaks
-    ======================= */
-    @media (max-width: 600px) {
-      .container { gap: clamp(12px, 4vw, 18px); }
-      /* Compact ASCII art on phones to avoid horizontal overflow without a scrollbar */
-      .ascii-art {
-        font-size: clamp(0.48rem, 1.9vw, 0.72rem);
-        letter-spacing: clamp(0.2px, 0.25vw, 0.8px);
-      }
-    }
-
-    @media (max-width: 360px) {
-      .ascii-art { font-size: 2vw; letter-spacing: 0.2px; }
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-color);
+      font-size: 0.85rem;
+      color: var(--text-muted);
     }
   </style>
 </head>
-
 <body>
-  <div id="progress-bar" aria-hidden="true"></div>
 
-  <div class="theme-toggle" aria-label="Theme toggle">
-    <span class="icon"><i class="fa-solid fa-moon"></i></span>
-    <input type="checkbox" id="theme-toggle" aria-label="Toggle light theme" />
-    <label for="theme-toggle"></label>
-    <span class="icon"><i class="fa-solid fa-sun"></i></span>
+  <div class="container">
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h1 class="profile-name">Kaixin Li</h1>
+      <p class="profile-title">PhD Student<br>National University of Singapore</p>
+      
+      <ul class="social-links">
+        <li><i class="fa-solid fa-envelope"></i> <a href="mailto:kaixinli2000@gmail.com">Email</a></li>
+        <li><i class="ai ai-google-scholar"></i> <a href="https://scholar.google.com/citations?user=crl_1igAAAAJ" target="_blank" rel="noopener">Google Scholar</a></li>
+        <li><i class="ai ai-semantic-scholar"></i> <a href="https://www.semanticscholar.org/author/Kaixin-Li/2263667967" target="_blank" rel="noopener">Semantic Scholar</a></li>
+        <li><i class="ai ai-orcid"></i> <a href="https://orcid.org/0009-0007-9842-3552" target="_blank" rel="noopener">ORCID</a></li>
+        <li><i class="fa-brands fa-github"></i> <a href="https://github.com/likaixin2000" target="_blank" rel="noopener">GitHub</a></li>
+        <li><i class="fa-brands fa-x-twitter"></i> <a href="https://x.com/kxli_2000" target="_blank" rel="noopener">X</a></li>
+        <li><i class="fa-brands fa-linkedin"></i> <a href="https://www.linkedin.com/in/kaixinli2000" target="_blank" rel="noopener">LinkedIn</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main>
+      
+      <!-- About -->
+      <section id="about">
+        <h2>About Me</h2>
+        <p>I am a PhD student at the National University of Singapore, fortunate to be supervised by <a href="https://www.comp.nus.edu.sg/cs/people/huangzy" target="_blank" rel="noopener">Prof. HUANG Zhiyong</a>. My research is primarily focused on multimodality, autonomous agents, and code generation.</p>
+        <p>Previously, I was a research intern at <a href="https://qwen.ai/research" target="_blank" rel="noopener">Qwen</a>, supervised by <a href="https://justinlin610.github.io/" target="_blank" rel="noopener">Junyang Lin</a> and <a href="https://huybery.github.io/" target="_blank" rel="noopener">Binyuan Hui</a>, where I contributed to building the Qwen model series, including Qwen-VL, Qwen-3.5, and Qwen-Coder. I have also had the great opportunity to work with <a href="https://www.comp.nus.edu.sg/cs/people/chuats/" target="_blank" rel="noopener">Prof. Tat-Seng Chua</a>, <a href="https://jxhe.github.io/" target="_blank" rel="noopener">Prof. Junxian He</a>, and <a href="https://michaelshieh.com/" target="_blank" rel="noopener">Prof. Michael Qizhe Shieh</a>.</p>
+      </section>
+
+      <!-- News -->
+      <section id="news">
+        <h2>Recent News</h2>
+        <ul class="news-list">
+          <li><span class="news-date">Apr 2026:</span> One paper accepted to ICML 2026.</li>
+          <li><span class="news-date">Feb 2026:</span> Released Qwen-3.5 and Qwen 3 Coder Next.</li>
+          <li><span class="news-date">Jan 2026:</span> Three papers accepted to ICLR 2026.</li>
+          <li><span class="news-date">Sep 2025:</span> Released <a href="https://github.com/QwenLM/Qwen3-VL" target="_blank" rel="noopener">Qwen3-VL</a>.</li>
+          <li><span class="news-date">Sep 2025:</span> One paper (SE-GUI) accepted to NeurIPS 2025.</li>
+          <li><span class="news-date">Aug 2025:</span> Two papers accepted to EMNLP 2025.</li>
+          <li><span class="news-date">Jul 2025:</span> ScreenSpot-Pro accepted to ACMMM 2025 as an Oral Presentation.</li>
+          <li><span class="news-date">May 2025:</span> Three papers accepted to ACL 2025.</li>
+        </ul>
+      </section>
+
+      <!-- Publications -->
+      <section id="publications">
+        <h2>Selected Publications</h2>
+
+        <h3>Agents & GUI Interaction</h3>
+        
+        <div class="pub-item">
+          <div class="pub-title">ScreenSpot-Pro: GUI Grounding for Professional High-Resolution Computer Use <span class="pub-note">(Oral Presentation)</span></div>
+          <div class="pub-authors"><span class="me">Kaixin Li</span>, Ziyang Meng, Hongzhan Lin, Ziyang Luo, Yuchen Tian, Jing Ma, Zhiyong Huang, Tat-Seng Chua</div>
+          <div class="pub-venue">ACMMM 2025 &middot; ICLR 2025 Workshop on Reasoning and Planning for LLMs</div>
+          <div class="pub-links">
+            <a href="https://likaixin2000.github.io/papers/ScreenSpot_Pro.pdf" target="_blank" rel="noopener">[Paper]</a>
+            <a href="https://github.com/likaixin2000/ScreenSpot-Pro-GUI-Grounding" target="_blank" rel="noopener">[Code]</a>
+            <a href="https://huggingface.co/datasets/likaixin/ScreenSpot-Pro" target="_blank" rel="noopener">[Dataset]</a>
+          </div>
+          <div class="pub-impact">
+            <div><i class="fa-solid fa-bolt"></i> Used by Google Gemini, GPT-5.2, Qwen-VL Series, Microsoft OmniParser, and Meta's Muse Spark.</div>
+            <div><i class="fa-solid fa-download"></i> 65,000+ dataset downloads.</div>
+          </div>
+        </div>
+
+        <div class="pub-item">
+          <div class="pub-title">Enhancing Visual Grounding for GUI Agents via Self-Evolutionary Reinforcement Learning</div>
+          <div class="pub-authors">Xinbin Yuan, Jian Zhang, <span class="me">Kaixin Li</span>, Zhuoxuan Cai, Jie Chen, Lujian Yao, Enguang Wang, Qibin Hou, Jinwei Chen, Peng-Tao Jiang, Bo Li</div>
+          <div class="pub-venue">NeurIPS 2025</div>
+          <div class="pub-links">
+            <a href="https://arxiv.org/pdf/2505.12370" target="_blank" rel="noopener">[Paper]</a>
+            <a href="https://github.com/YXB-NKU/SE-GUI" target="_blank" rel="noopener">[Code]</a>
+            <a href="https://huggingface.co/XinBB/SE-GUI-7B" target="_blank" rel="noopener">[Models]</a>
+          </div>
+        </div>
+
+        <div class="pub-item">
+          <div class="pub-title">Grounding Computer Use Agents on Human Demonstrations</div>
+          <div class="pub-authors">Aarash Feizi, Shravan Nayak, Xiangru Jian, Kevin Qinghong Lin, <span class="me">Kaixin Li</span>, Rabiul Awal, Xing Han Lù, Johan Obando-Ceron, Juan A. Rodriguez, Nicolas Chapados, David Vazquez, Adriana Romero-Soriano, Reihaneh Rabbany, Perouz Taslakian, Christopher Pal, Spandana Gella, Sai Rajeswara</div>
+          <div class="pub-venue">ICLR 2026</div>
+          <div class="pub-links">
+            <a href="https://arxiv.org/abs/2511.07332" target="_blank" rel="noopener">[Paper]</a>
+          </div>
+        </div>
+
+        <div class="pub-item">
+          <div class="pub-title">HackWorld: Evaluating Computer-Use Agents on Exploiting Web Application Vulnerabilities</div>
+          <div class="pub-authors">Xiaoxue Ren*, Penghao Jiang*, <span class="me">Kaixin Li*</span>, Zhiyong Huang, Xiaoning Du, Jiaojiao Jiang, Zhenchang Xing, Jiamou Sun, Terry Yue Zhuo</div>
+          <div class="pub-venue">ICLR 2026</div>
+          <div class="pub-links">
+            <a href="https://arxiv.org/abs/2510.12200" target="_blank" rel="noopener">[Paper]</a>
+          </div>
+        </div>
+
+        <div class="pub-item">
+          <div class="pub-title">Robi Butler: Remote Multimodal Interactions with Household Robot Assistant</div>
+          <div class="pub-authors">Anxing Xiao, Nuwan Janaka, Tianrun Hu, Anshul Gupta, <span class="me">Kaixin Li</span>, Cunjun Yu, David Hsu</div>
+          <div class="pub-venue">ICRA 2025</div>
+          <div class="pub-links">
+            <a href="https://arxiv.org/pdf/2409.20548" target="_blank" rel="noopener">[Paper]</a>
+            <a href="https://robibutler.github.io/" target="_blank" rel="noopener">[Project Page]</a>
+          </div>
+        </div>
+
+        <h3>Coding & Code Intelligence</h3>
+
+        <div class="pub-item">
+          <div class="pub-title">MMCode: Evaluating Multi-Modal Code Large Language Models with Visually Rich Programming Problems</div>
+          <div class="pub-authors"><span class="me">Kaixin Li</span>, Yuchen Tian, Qisheng Hu, Ziyang Luo, Zhiyong Huang, Jing Ma</div>
+          <div class="pub-venue">EMNLP 2024 Findings &middot; ICLR 2025 Workshop on Reasoning and Planning for LLMs</div>
+          <div class="pub-links">
+            <a href="https://arxiv.org/pdf/2404.09486" target="_blank" rel="noopener">[Paper]</a>
+            <a href="https://github.com/happylkx/MMCode" target="_blank" rel="noopener">[Code]</a>
+            <a href="https://huggingface.co/datasets/likaixin/MMCode" target="_blank" rel="noopener">[Dataset]</a>
+          </div>
+          <div class="pub-impact">
+            <i class="fa-solid fa-bolt"></i> Used by Qwen2.5-VL and Qwen3-VL.
+          </div>
+        </div>
+
+        <div class="pub-item">
+          <div class="pub-title">BigCodeArena: Unveiling More Reliable Human Preferences in Code Generation via Execution</div>
+          <div class="pub-authors">Terry Yue Zhuo, Xiaolong Jin, Hange Liu... <span class="me">Kaixin Li</span>, Yuhan Cao, Bo Liu, et al.</div>
+          <div class="pub-venue">arXiv</div>
+          <div class="pub-links">
+            <a href="https://arxiv.org/abs/2510.08697" target="_blank" rel="noopener">[Paper]</a>
+            <a href="https://github.com/bigcode-project/bigcodearena" target="_blank" rel="noopener">[Code]</a>
+          </div>
+        </div>
+
+        <div class="pub-item">
+          <div class="pub-title">Tree-of-Evolution: Tree-Structured Instruction Evolution for Code Generation in Large Language Models</div>
+          <div class="pub-authors">Ziyang Luo, <span class="me">Kaixin Li</span>, Hongzhan Lin, Yuchen Tian, Mohan Kankanhalli, Jing Ma</div>
+          <div class="pub-venue">ACL 2025</div>
+          <div class="pub-links">
+            <a href="https://aclanthology.org/2025.acl-long.14.pdf" target="_blank" rel="noopener">[Paper]</a>
+          </div>
+        </div>
+
+        <div class="pub-item">
+          <div class="pub-title">MCTS-Judge: Test-Time Scaling in LLM-as-a-Judge for Code Correctness Evaluation</div>
+          <div class="pub-authors">Yutong Wang, Pengliang Ji, Chaoqun Yang, <span class="me">Kaixin Li</span>, Ming Hu, Jiaoyang Li, Guillaume Sartoretti</div>
+          <div class="pub-venue">arXiv preprint (2502.12468)</div>
+          <div class="pub-links">
+            <a href="https://arxiv.org/pdf/2502.12468" target="_blank" rel="noopener">[Paper]</a>
+          </div>
+        </div>
+
+        <div class="pub-item">
+          <div class="pub-title">InstructCoder: Empowering Language Models for Code Editing <span class="pub-note">(Oral Presentation)</span></div>
+          <div class="pub-authors"><span class="me">Kaixin Li*</span>, Qisheng Hu*, Xu Zhao, Yuxi Xie, Tiedong Liu, Hui Chen, Qizhe Xie*, Junxian He*</div>
+          <div class="pub-venue">ACL 2024 SRW</div>
+          <div class="pub-links">
+            <a href="https://arxiv.org/abs/2310.20329" target="_blank" rel="noopener">[Paper]</a>
+            <a href="https://github.com/qishenghu/CodeInstruct" target="_blank" rel="noopener">[Code]</a>
+            <a href="https://huggingface.co/datasets/likaixin/InstructCoder" target="_blank" rel="noopener">[Dataset]</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Open Source -->
+      <section id="open-source">
+        <h2>Open Source</h2>
+        <ul class="os-list">
+          <li>
+            <strong>TACO-verified:</strong> Verified code contest problems and solutions. <br>
+            <span style="display:inline-block; margin-top:4px;" class="pub-impact">
+              <i class="fa-solid fa-download"></i> 5,000+ downloads &middot; <i class="fa-solid fa-star"></i> Widely used by the community and by DeepCoder.
+            </span>
+            <br>
+            <a href="https://huggingface.co/datasets/likaixin/TACO-verified" target="_blank" rel="noopener">[Dataset]</a>
+          </li>
+          <li style="margin-top: 12px;">
+            <strong>IconStack-48M:</strong> The largest icon dataset with 48 million images, SVGs, captions, and rich metadata. <br>
+            <a href="https://huggingface.co/datasets/likaixin/IconStack-48M-Rendered-Train" target="_blank" rel="noopener">[Dataset]</a>
+          </li>
+        </ul>
+      </section>
+
+      <!-- Services -->
+      <section id="services">
+        <h2>Services</h2>
+        <p><strong>Peer Reviewer for:</strong></p>
+        <ul class="service-list">
+          <li>ICLR (2024, 2025, 2026)</li>
+          <li>CVPR (2025)</li>
+          <li>ECCV (2026)</li>
+          <li>ACL (2025)</li>
+          <li>EMNLP (2025)</li>
+          <li>AAAI (2025)</li>
+          <li>ACMMM (2025)</li>
+        </ul>
+      </section>
+
+    </main>
   </div>
 
-  <div class="page">
-    <div class="container">
-      <header class="terminal-header">
-        <div class="terminal-title">
-          <span class="led red"><i class="fas fa-circle"></i></span>
-          <span class="led yellow"><i class="fas fa-circle"></i></span>
-          <span class="led green"><i class="fas fa-circle"></i></span>
-          <div class="typed-text">kaixinli@nus:~$ ./init_portfolio</div>
-        </div>
+  <footer>
+    <p>&copy; 2026 Kaixin Li. Last updated: May 2026.</p>
+  </footer>
 
-        <div class="ascii-art">
- _  __          _          _              _       ___ 
-| |/ /   __ _  (_) __  __ (_)  _ __      | |     |_ _|
-| ' /   / _` | | | \ \/ / | | | '_ \     | |      | | 
-| . \  | (_| | | |  >  <  | | | | | |    | |___   | | 
-|_|\_\  \__,_| |_| /_/\_\ |_| |_| |_|    |_____| |___|
-        </div>
-
-        <div class="terminal-bar">
-          <div>kaixinli@nus:~$ Building powerful models and datasets... <span class="cursor"></span></div>
-        </div>
-      </header>
-
-      <aside class="sidebar">
-        <section class="card animate-on-scroll" style="animation-delay: 0.2s">
-          <h3><i class="fas fa-link"></i> SOCIAL</h3>
-          <div class="social-links">
-            <a href="mailto:kaixinli2000@gmail.com"><i class="fas fa-fw fa-envelope" aria-hidden="true"></i> Email</a>
-            <a href="https://scholar.google.com/citations?user=crl_1igAAAAJ"><i class="ai ai-google-scholar ai-fw"></i> Google Scholar</a>
-            <a href="https://www.semanticscholar.org/author/Kaixin-Li/2263667967"><i class="ai ai-semantic-scholar ai-fw"></i> Semantic Scholar</a>
-            <a href="https://orcid.org/0009-0007-9842-3552"><i class="ai ai-orcid ai-fw"></i> ORCID</a>
-            <a href="https://github.com/likaixin2000"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a>
-            <a href="https://www.linkedin.com/in/kaixinli2000"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> LinkedIn</a>
-            <a href="https://twitter.com/kxli_2000"><i class="fab fa-fw fa-x-twitter" aria-hidden="true"></i> X (Twitter)</a>
-          </div>
-        </section>
-      </aside>
-
-      <main>
-        <section class="card animate-on-scroll">
-          <h2><i class="fas fa-terminal"></i> About me</h2>
-          <p>I am Kaixin LI, a PhD student at National University of Singapore, under supervision of <a href="https://www.comp.nus.edu.sg/cs/people/huangzy">Prof. HUANG Zhiyong</a>. I am deeply interested in multimodality, autonomous agents, and code generation.</p>
-          <p style="margin-top: 10px;">I am now working as a research intern at <img src="https://upload.wikimedia.org/wikipedia/commons/6/69/Qwen_logo.svg" alt="Qwen AI logo" style="height: 1.5rem; vertical-align: text-bottom;"> <a href="https://qwen.ai/research">Qwen</a> supervised by <a href="https://justinlin610.github.io/">Junyang Lin</a> and <a href="https://huybery.github.io/">Binyuan Hui</a>, building the Qwen model series, including <a href="https://github.com/QwenLM/Qwen3-Coder">Qwen-Coder</a> and <a href="https://github.com/QwenLM/Qwen3-VL">Qwen-VL</a>, etc.</p>
-          <p style="margin-top: 10px;">Prior to this, I am lucky to have worked with <a href="https://www.comp.nus.edu.sg/cs/people/chuats/">Prof. Tat-Seng Chua</a>, <a href="https://michaelshieh.com/">Prof. Michael Qizhe Shieh</a> and <a href="https://jxhe.github.io/">Prof. Junxian He</a>.</p>
-          <div class="tag-row" style="margin-top: 12px;">
-            <span class="tag"><i class="fa-solid fa-display"></i> Computer Use Agents</span>
-            <span class="tag"><i class="fa-solid fa-terminal"></i> (Multimodal) Code Generation</span>
-          </div>
-        </section>
-
-        <section class="card animate-on-scroll" style="animation-delay: 0.05s">
-          <h2><i class="fa-solid fa-newspaper"></i> News</h2>
-          <ul class="news-list">
-            <li> Jan 2026: Three papers accepted to ICLR 2026. </li>
-            <li>Sep 2025: Released <a href="https://github.com/QwenLM/Qwen3-VL">Qwen3-VL</a> in which I am responsible for its coding capabilities.</li>
-            <li>Sep 2025: One paper <a href="https://github.com/YXB-NKU/SE-GUI">SE-GUI</a> accepted to NeurIPS 2025.</li>
-            <li>Aug 2025: Two papers accepted to EMNLP 2025.</li>
-            <li>Jul 2025: One paper <a href="https://github.com/likaixin2000/ScreenSpot-Pro-GUI-Grounding">ScreenSpot-Pro</a> accepted to ACMMM 2025 as oral presentation.</li>
-            <li>May 2025: Three papers accepted to ACL 2025.</li>
-          </ul>
-        </section>
-
-        <section class="card animate-on-scroll" style="animation-delay: 0.1s">
-          <h2><i class="fas fa-code"></i> SELECTED PUBLICATIONS</h2>
-
-          <div class="pub-section">
-            <h3 class="paper-category"><i class="fas fa-robot"></i> AGENTS & GUI INTERACTION</h3>
-
-            <div class="card-art art-gui" aria-hidden="true">
-              <div class="window w2">
-                <div class="bar"><span class="r"></span><span class="y"></span><span class="g"></span></div>
-                <div class="tiles"><i class="fas fa-globe"></i><i class="fas fa-mouse-pointer"></i><i class="fas fa-keyboard"></i></div>
-              </div>
-            </div>
-
-            <div class="pub-category">
-              <div class="pub-title">ScreenSpot-Pro: GUI Grounding for Professional High-Resolution Computer Use</div>
-              <div class="pub-authors"><span class="me">Kaixin Li</span>, Ziyang Meng, Hongzhan Lin, Ziyang Luo, Yuchen Tian, Jing Ma, Zhiyong Huang, Tat-Seng Chua</div>
-              <div class="pub-venue">ACMMM 2025 (Oral); ICLR 2025 Workshop on Reasoning and Planning for Large Language Models</div>
-              <div class="tag-row">
-                <span class="tag highlight"><i class="fa-solid fa-microphone-lines"></i> Oral Presentation</span>
-                <a class="chip github" href="https://github.com/likaixin2000/ScreenSpot-Pro-GUI-Grounding"><i class="fab fa-github"></i> GitHub</a>
-                <a class="chip paper" href="https://likaixin2000.github.io/papers/ScreenSpot_Pro.pdf"><i class="fa-regular fa-file-lines"></i> Paper</a>
-                <a class="chip hf" href="https://huggingface.co/datasets/likaixin/ScreenSpot-Pro"><span>🤗</span> Hugging Face</a>
-                <span class="tag used"><i class="fa-solid fa-bolt"></i> Used by <a href="https://blog.google/products/gemini/gemini-3/">Google Gemini</a>, <a href="https://openai.com/index/introducing-gpt-5-2/">GPT-5.2</a>, <a href="https://github.com/QwenLM/Qwen3-VL">Qwen-VL Series</a>, <a href="https://microsoft.github.io/OmniParser/">Microsoft OmniParser</a>, etc.</span>
-                <!-- <span class="tag"><i class="fa-solid fa-download"></i> 30,000+ downloads</span> -->
-              </div>
-            </div>
-
-            <div class="pub-category">
-              <div class="pub-title">Enhancing Visual Grounding for GUI Agents via Self-Evolutionary Reinforcement Learning</div>
-              <div class="pub-authors">Xinbin Yuan, Jian Zhang, <span class="me">Kaixin Li</span>, Zhuoxuan Cai, Jie Chen, Lujian Yao, Enguang Wang, Qibin Hou, Jinwei Chen, Peng-Tao Jiang, Bo Li</div>
-              <div class="pub-venue">NeurIPS 2025</div>
-              <div class="tag-row">
-                <a class="chip paper" href="https://arxiv.org/pdf/2505.12370"><i class="fa-regular fa-file-lines"></i> Paper</a>
-                <a class="chip github" href="https://github.com/YXB-NKU/SE-GUI"><i class="fab fa-github"></i> GitHub</a>
-                <a class="chip hf" href="https://huggingface.co/XinBB/SE-GUI-7B" tabindex="-1"><span>🤗</span> SE-GUI 7B</a>
-                <a class="chip hf" href="https://huggingface.co/XinBB/SE-GUI-3B" tabindex="-1"><span>🤗</span> SE-GUI 3B</a>
-              </div>
-            </div>
-
-            <div class="pub-category">
-              <div class="pub-title">Grounding Computer Use Agents on Human Demonstrations</div>
-              <div class="pub-authors">Aarash Feizi, Shravan Nayak, Xiangru Jian, Kevin Qinghong Lin, <span class="me">Kaixin Li</span>, Rabiul Awal, Xing Han Lù, Johan Obando-Ceron, Juan A. Rodriguez, Nicolas Chapados, David Vazquez, Adriana Romero-Soriano, Reihaneh Rabbany, Perouz Taslakian, Christopher Pal, Spandana Gella, Sai Rajeswara</div>
-              <div class="pub-venue">ICLR 2026</div>
-              <div class="tag-row">
-                <a class="chip paper" href="https://arxiv.org/abs/2511.07332"><i class="fa-regular fa-file-lines"></i> Paper</a>
-              </div>
-            </div>
-
-            <div class="pub-category">
-              <div class="pub-title">HackWorld: Evaluating Computer-Use Agents on Exploiting Web Application Vulnerabilities</div>
-              <div class="pub-authors">Xiaoxue Ren*, Penghao Jiang*, <span class="me">Kaixin Li*</span>, Zhiyong Huang, Xiaoning Du, Jiaojiao Jiang, Zhenchang Xing, Jiamou Sun, Terry Yue Zhuo</div>
-              <div class="pub-venue">ICLR 2026</div>
-              <div class="tag-row">
-                <a class="chip paper disabled" href="#"><i class="fa-regular fa-file-lines"></i> Paper</a>
-              </div>
-            </div>
-
-            <div class="pub-category">
-              <div class="pub-title">Robi Butler: Remote Multimodal Interactions with Household Robot Assistant</div>
-              <div class="pub-authors">Anxing Xiao, Nuwan Janaka, Tianrun Hu, Anshul Gupta, <span class="me">Kaixin Li</span>, Cunjun Yu, David Hsu</div>
-              <div class="pub-venue">ICRA 2025</div>
-              <div class="tag-row">
-                <a class="chip paper" href="https://arxiv.org/pdf/2409.20548"><i class="fa-regular fa-file-lines"></i> Paper</a>
-                <a class="chip project-page" href="https://robibutler.github.io/"><i class="fa-solid fa-globe"></i> Project Page</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="pub-section">
-            <h3 class="paper-category"><i class="fas fa-laptop-code"></i> CODING & CODE INTELLIGENCE</h3>
-
-            <div class="card-art art-code" aria-hidden="true">
-              <div class="panel p2">
-                <div class="rows">
-                  <span class="w40"></span>
-                  <span class="w60 alt"></span>
-                  <span class="w75"></span>
-                </div>
-              </div>
-              <div class="glyph g3"><i class="fa-solid fa-terminal"></i></div>
-            </div>
-
-            <div class="pub-category">
-              <div class="pub-title">MMCode: Evaluating Multi-Modal Code Large Language Models with Visually Rich Programming Problems</div>
-              <div class="pub-authors"><span class="me">Kaixin Li</span>, Yuchen Tian, Qisheng Hu, Ziyang Luo, Zhiyong Huang, Jing Ma</div>
-              <div class="pub-venue">EMNLP 2024 Findings; ICLR 2025 Workshop on Reasoning and Planning for Large Language Models</div>
-              <div class="tag-row">
-                <a class="chip github" href="https://github.com/happylkx/MMCode"><i class="fab fa-github"></i> GitHub</a>
-                <a class="chip paper" href="https://arxiv.org/pdf/2404.09486"><i class="fa-regular fa-file-lines"></i> Paper</a>
-                <a class="chip hf" href="https://huggingface.co/datasets/likaixin/MMCode"><span>🤗</span> Hugging Face</a>
-                <span class="tag used"><i class="fa-solid fa-bolt"></i> Used by Qwen2.5-VL and Qwen3-VL</span>
-              </div>
-            </div>
-
-            <div class="pub-category">
-              <div class="pub-title">BigCodeArena: Unveiling More Reliable Human Preferences in Code Generation via Execution</div>
-              <div class="pub-authors">Terry Yue Zhuo, Xiaolong Jin, Hange Liu, Juyong Jiang, Tianyang Liu, Chen GONG, Bhupesh Bishnoi, Vaisakhi Mishra, Marek Suppa, Noah Ziems, Saiteja Utpala, Ming Xu, Guangyu Song, <span class="me">Kaixin Li</span>, Yuhan Cao, Bo Liu, Zheng Liu, Sabina Abdurakhmanova, Wenhao Yu, Mengzhao Jia, Jihan Yao, Kenneth Hamilton, Kumar Shridhar, Vu Minh Chien, Dingmin Wang, Jiawei Liu, Zijian Wang, Qian Liu, Binyuan Hui, Meg Risdal, Ahsen Khaliq, Atin Sood, Zhenchang Xing, Wasi Uddin Ahmad, John C. Grundy, David Lo, Banghua Zhu, Xiaoning Du, Torsten Scholak, Leandro Von Werra</div>
-              <div class="pub-venue">arXiv</div>
-              <div class="tag-row">
-                <a class="chip github" href="https://github.com/bigcode-project/bigcodearena"><i class="fab fa-github"></i> GitHub</a>
-                <a class="chip paper" href="https://arxiv.org/abs/2510.08697"><i class="fa-regular fa-file-lines"></i> Paper</a>
-              </div>
-            </div>
-
-            <div class="pub-category">
-              <div class="pub-title">Tree-of-Evolution: Tree-Structured Instruction Evolution for Code Generation in Large Language Models</div>
-              <div class="pub-authors">Ziyang Luo, <span class="me">Kaixin Li</span>, Hongzhan Lin, Yuchen Tian, Mohan Kankanhalli, Jing Ma</div>
-              <div class="pub-venue">ACL 2025</div>
-              <div class="tag-row">
-                <a class="chip github" href="#"><i class="fab fa-github"></i> GitHub</a>
-                <a class="chip paper" href="https://aclanthology.org/2025.acl-long.14.pdf"><i class="fa-regular fa-file-lines"></i> Paper</a>
-              </div>
-            </div>
-
-            <div class="pub-category">
-              <div class="pub-title">MCTS-Judge: Test-Time Scaling in LLM-as-a-Judge for Code Correctness Evaluation</div>
-              <div class="pub-authors">Yutong Wang, Pengliang Ji, Chaoqun Yang, <span class="me">Kaixin Li</span>, Ming Hu, Jiaoyang Li, Guillaume Sartoretti</div>
-              <div class="pub-venue">arXiv preprint arXiv:2502.12468</div>
-              <div class="tag-row">
-                <a class="chip paper" href="https://arxiv.org/pdf/2502.12468"><i class="fa-regular fa-file-lines"></i> Paper</a>
-              </div>
-            </div>
-
-            <div class="pub-category">
-              <div class="pub-title">InstructCoder: Empowering Language Models for Code Editing</div>
-              <div class="pub-authors"><span class="me">Kaixin Li</span>*, Qisheng Hu*, Xu Zhao, Yuxi Xie, Tiedong Liu, Hui Chen, Qizhe Xie*, Junxian He*</div>
-              <div class="pub-venue">ACL 2024 SRW; EMNLP 2023 Reject with Score 4 4 4 / 5</div>
-              <div class="tag-row">
-                <span class="tag highlight"><i class="fa-solid fa-microphone-lines"></i> Oral Presentation</span>
-                <a class="chip github" href="https://github.com/qishenghu/CodeInstruct"><i class="fab fa-github"></i> GitHub</a>
-                <a class="chip paper" href="https://arxiv.org/abs/2310.20329"><i class="fa-regular fa-file-lines"></i> Paper</a>
-                <a class="chip hf" href="https://huggingface.co/datasets/likaixin/InstructCoder"><span>🤗</span> Hugging Face</a>
-                <a class="chip paper" href="https://openreview.net/forum?id=islVqaCzfa"><i class="fa-regular fa-file-lines"></i> OpenReview</a>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="card animate-on-scroll" style="animation-delay: 0.2s">
-          <h2><i class="fa-solid fa-user-check"></i> SERVICES</h2>
-          <p>Peer Review: Code intelligence, multimodal understanding/generation, GUI agents.</p>
-          <div class="tag-row" style="margin-top: 10px;">
-            <span class="tag"><i class="fa-solid fa-clipboard-check"></i> ICLR 2024, 2025</span>
-            <span class="tag"><i class="fa-solid fa-clipboard-check"></i> CVPR 2025</span>
-            <span class="tag"><i class="fa-solid fa-clipboard-check"></i> ACL 2025</span>
-            <span class="tag"><i class="fa-solid fa-clipboard-check"></i> EMNLP 2025</span>
-            <span class="tag"><i class="fa-solid fa-clipboard-check"></i> AAAI 2025</span>
-            <span class="tag"><i class="fa-solid fa-clipboard-check"></i> ACMMM 2025</span>
-          </div>
-        </section>
-
-        <section class="card animate-on-scroll" style="animation-delay: 0.3s">
-          <h2><i class="fa-solid fa-box-open"></i> OPEN SOURCE</h2>
-
-          <div class="pub-category">
-            <div class="pub-title">TACO-verified</div>
-            <div class="pub-venue">Verified code contest problems and solutions. 5,000+ downloads; widely used by the community and by <a href="https://deepcoder.org/">DeepCoder</a></div>
-            <div class="tag-row">
-              <a class="chip hf" href="https://huggingface.co/datasets/likaixin/TACO-verified" tabindex="-1"><span>🤗</span> Dataset</a>
-            </div>
-          </div>
-
-          <div class="pub-category">
-            <div class="pub-title">IconStack-48M</div>
-            <div class="pub-venue">The largest icon dataset with 48 million images, SVG, captions and rich metadata.</div>
-            <div class="tag-row">
-              <a class="chip hf" href="https://huggingface.co/datasets/likaixin/IconStack-48M-Rendered-Train" tabindex="-1"><span>🤗</span> Training Set</a>
-              <a class="chip hf" href="https://huggingface.co/datasets/likaixin/IconStack-48M-Rendered-Dev" tabindex="-1"><span>🤗</span> Dev Set</a>
-            </div>
-          </div>
-        </section>
-
-        <footer class="footer">
-          <p>Last updated: <span>September 28, 2025</span></p>
-        </footer>
-      </main>
-    </div>
-  </div>
-
-  <script>
-    // Intersection-based reveal: appear promptly
-    const animateEls = document.querySelectorAll('.animate-on-scroll');
-
-    function revealAlreadyVisible() {
-      animateEls.forEach(el => {
-        const rect = el.getBoundingClientRect();
-        const inView = rect.top < window.innerHeight && rect.bottom > 0;
-        if (inView) el.classList.add('visible');
-      });
-    }
-
-    if ('IntersectionObserver' in window) {
-      const observer = new IntersectionObserver((entries, obs) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            obs.unobserve(entry.target);
-          }
-        });
-      }, {
-        root: null,
-        threshold: 0,
-        rootMargin: '0px 0px -5% 0px'
-      });
-      animateEls.forEach(el => observer.observe(el));
-      window.addEventListener('DOMContentLoaded', revealAlreadyVisible);
-      window.addEventListener('load', revealAlreadyVisible);
-      window.addEventListener('resize', revealAlreadyVisible);
-    } else {
-      animateEls.forEach(el => el.classList.add('visible'));
-    }
-
-    // Theme toggle with persistence
-    const themeToggle = document.getElementById('theme-toggle');
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'light') {
-      document.body.classList.add('light-theme');
-      themeToggle.checked = true;
-    }
-    themeToggle.addEventListener('change', function () {
-      if (this.checked) {
-        document.body.classList.add('light-theme');
-        localStorage.setItem('theme', 'light');
-      } else {
-        document.body.classList.remove('light-theme');
-        localStorage.setItem('theme', 'dark');
-      }
-    });
-
-    // Social links entrance
-    const socialLinks = document.querySelectorAll('.social-links a');
-    socialLinks.forEach((link, i) => {
-      link.style.opacity = '0';
-      link.style.transform = 'translateX(-8px)';
-      link.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-      setTimeout(() => {
-        link.style.opacity = '1';
-        link.style.transform = 'translateX(0)';
-      }, 200 + i * 50);
-    });
-
-    // Scroll progress bar
-    const progressBar = document.getElementById('progress-bar');
-    function updateProgress() {
-      const doc = document.documentElement;
-      const scrollTop = doc.scrollTop || document.body.scrollTop;
-      const scrollHeight = (doc.scrollHeight || document.body.scrollHeight) - doc.clientHeight;
-      const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
-      progressBar.style.width = progress + '%';
-    }
-    window.addEventListener('scroll', updateProgress, { passive: true });
-    window.addEventListener('resize', updateProgress);
-    document.addEventListener('DOMContentLoaded', updateProgress);
-
-    // Make links open in a new tab safely (skip disabled)
-    (function enforceNewTabLinks() {
-      const links = document.querySelectorAll('a[href]:not(.disabled)');
-      links.forEach(a => {
-        a.target = '_blank';
-        const rel = a.getAttribute('rel') || '';
-        const parts = new Set(rel.split(/\s+/).filter(Boolean));
-        parts.add('noopener'); parts.add('noreferrer');
-        a.setAttribute('rel', Array.from(parts).join(' '));
-      });
-    })();
-  </script>
 </body>
 </html>
