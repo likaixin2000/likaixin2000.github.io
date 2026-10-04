@@ -110,20 +110,46 @@
       text-align: center;
     }
 
-    /* Visit Counter */
-    .visit-counter {
-      margin-top: 22px;
-      padding-top: 18px;
-      border-top: 1px solid var(--border-color);
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    /* Visitor Counter (footer) -- on its own line, under the copyright */
+    .visitor-count {
+      display: block;
+      margin-top: 6px;
     }
 
-    .visit-counter img {
-      display: block;
-      height: 20px;
-      width: auto;
+    /* The widget's own CSS kills the underline; restore it so the counter
+       still reads as a link. */
+    .visitor-count #mapmyvisitors-widget:hover .mpmvs {
+      text-decoration: underline !important;
+    }
+
+    /* MapMyVisitors renders a map plus a count in one widget. We only want the
+       count, so hide the map and keep the counter text. The widget's anchor
+       already wraps the text, so the count stays clickable through to their
+       site on its own. */
+    .visitor-count #mapmyvisitors-widget {
+      display: inline-block;
+      width: auto !important;
+      min-height: 0 !important;
+      margin: 0 !important;
+    }
+
+    .visitor-count .mapmyvisitors-map-container {
+      background-color: transparent !important;
+    }
+
+    .visitor-count .mapmyvisitors-map,
+    .visitor-count .mapmyvisitors-date,
+    .visitor-count .jvectormap-container,
+    .visitor-count #clstminf {
+      display: none !important;
+    }
+
+    .visitor-count .mpmvs {
+      font-family: 'Inter', sans-serif !important;
+      font-size: 0.85rem !important;
+      line-height: 1.4 !important;
+      padding: 0 !important;
+      color: var(--text-muted) !important;
     }
 
     /* =======================
@@ -265,12 +291,17 @@
 
     /* Footer */
     footer {
-      text-align: center;
-      margin-top: 50px;
-      padding-top: 20px;
+      max-width: 900px;
+      margin: 50px auto 0;
+      padding: 20px 20px 48px;
       border-top: 1px solid var(--border-color);
+      text-align: center;
       font-size: 0.85rem;
       color: var(--text-muted);
+    }
+
+    footer p {
+      margin: 0;
     }
   </style>
 </head>
@@ -292,11 +323,6 @@
         <li><i class="fa-brands fa-x-twitter"></i> <a href="https://x.com/kxli_2000" target="_blank" rel="noopener">X</a></li>
         <li><i class="fa-brands fa-linkedin"></i> <a href="https://www.linkedin.com/in/kaixinli2000" target="_blank" rel="noopener">LinkedIn</a></li>
       </ul>
-
-      <div class="visit-counter">
-        <img src="https://komarev.com/ghpvc/?username=likaixin2000&amp;label=Visitors&amp;color=555555&amp;style=flat-square"
-             alt="Website visitors" loading="lazy" />
-      </div>
     </aside>
 
     <!-- Main Content -->
@@ -478,7 +504,10 @@
   </div>
 
   <footer>
-    <p>&copy; 2026 Kaixin Li. Last updated: May 2026.</p>
+    <p>&copy; 2026 Kaixin Li. Last updated: Oct 2026.</p>
+    <div class="visitor-count">
+      <script type="text/javascript" id="mapmyvisitors" src="https://mapmyvisitors.com/map.js?cl=ffffff&amp;w=a&amp;t=tt&amp;d=VlQttvlkH_W3vIiktNG_qPJdJCnMZK1nIp62BVs-iKY"></script>
+    </div>
   </footer>
 
 </body>
